@@ -9,5 +9,6 @@ package Models;
  * @author ekard
  */
 public interface Entity {
-    
+    public boolean isComplete();
+    public Object[] toArrayObject();
 }
