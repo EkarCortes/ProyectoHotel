@@ -8,7 +8,8 @@ package Controller;
  *
  * @author ekard
  */
-public interface Controller<Type> {
+
+public interface Controller <Type>{
  public void insert(Type obj);
  public void update(Type obj);
  public void delete(Type obj);
