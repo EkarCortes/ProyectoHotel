@@ -1,4 +1,6 @@
-package Models;
+package Models.Clientes;
+
+import Models.Persona;
 
 /**
  *

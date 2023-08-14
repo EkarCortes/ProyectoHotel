@@ -4,7 +4,7 @@ package Models;
  *
  * @author abiga
  */
-public class Persona {
+public abstract class Persona {
    private String Identificacion;
    private String nombre;
    private String telefono;
