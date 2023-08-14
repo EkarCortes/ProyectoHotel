@@ -26,4 +26,27 @@ public class Persona {
         this.nombre = nombre;
         this.telefono = "";
     }
+    public String getIdentificacion() {
+        return Identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.Identificacion = identificacion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 }
+
