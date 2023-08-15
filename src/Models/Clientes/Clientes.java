@@ -1,12 +1,13 @@
 package Models.Clientes;
 
+import Models.Entity;
 import Models.Persona;
 
 /**
  *
  * @author abiga
  */
-public class Clientes extends Persona{
+public class Clientes extends Persona implements Entity{
     private String FechadeNacimiento;
     private String Correo;
     
@@ -41,5 +42,16 @@ public class Clientes extends Persona{
 
     public void setCorreo(String correo) {
         this.Correo = correo;
+    }
+
+    @Override
+    public boolean isComplete() {
+        return !getIdentificacion().isEmpty() && !getNombre().isEmpty() && !FechadeNacimiento.isEmpty();
+    }
+
+
+    @Override
+    public Object[] toArrayObject() {
+        return new Object[] {getIdentificacion(), getNombre(), getTelefono(), FechadeNacimiento, Correo};
     }
 }

@@ -4,11 +4,11 @@ import Models.Clientes.Clientes;
 import Models.Clientes.ClientesList;
 import View.View;
 
-public class ClienteController {
+public class ClientesController {
     private ClientesList list;
     private View view;
 
-    public ClienteController(View view) {
+    public ClientesController(View view) {
         list = ClientesList.getInstance();
         this.view = view;
     }
