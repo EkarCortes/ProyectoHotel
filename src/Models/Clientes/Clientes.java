@@ -2,6 +2,8 @@ package Models.Clientes;
 
 import Models.Entity;
 import Models.Persona;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -17,10 +19,8 @@ public class Clientes extends Persona implements Entity{
         this.Correo = correo;
     }
 
-    public Clientes() {
-        super(); 
-        this.FechadeNacimiento = "";
-        this.Correo = "";
+    public Clientes(String identificacion) {
+        super(identificacion, "", ""); 
     }
 
     public Clientes(String identificacion, String nombre, String fechaDeNacimiento) {
@@ -43,7 +43,20 @@ public class Clientes extends Persona implements Entity{
     public void setCorreo(String correo) {
         this.Correo = correo;
     }
-
+    public int getEdad() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date fechaNacimiento = dateFormat.parse(FechadeNacimiento);
+            Date fechaActual = new Date();
+            
+            long diferencia = fechaActual.getTime() - fechaNacimiento.getTime();
+            long yearsInMillis = 1000L * 60L * 60L * 24L * 365L;
+            int edad = (int) (diferencia / yearsInMillis);
+            
+            return edad;
+        } catch (Exception e) {
+            return -1; }
+        }
     @Override
     public boolean isComplete() {
         return !getIdentificacion().isEmpty() && !getNombre().isEmpty() && !FechadeNacimiento.isEmpty();
