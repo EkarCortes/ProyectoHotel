@@ -18,7 +18,7 @@ public class ClientesController {
             list.insert(cliente);
             this.readAll();
         } else {
-            view.displayErrorMessage("Faltan datos, No se pudo agregar el cliente.");
+            view.displayErrorMessaje("Faltan datos, No se pudo agregar el cliente.");
         }
     }
 
@@ -27,7 +27,7 @@ public class ClientesController {
             list.update(cliente);
             this.readAll();
         } else {
-            view.displayErrorMessage("No se puede actualizar el cliente. Faltan datos.");
+            view.displayErrorMessaje("No se puede actualizar el cliente. Faltan datos.");
         }
     }
 
@@ -35,7 +35,7 @@ public class ClientesController {
         if (list.delete(cliente)) {
             this.readAll();
         } else {
-            view.displayErrorMessage("No se puede eliminar el cliente. No se encontró en la lista.");
+            view.displayErrorMessaje("No se puede eliminar el cliente. No se encontró en la lista.");
         }
     }
 
@@ -44,7 +44,7 @@ public class ClientesController {
         if (cliente != null) {
             view.display(cliente);
         } else {
-            view.displayErrorMessage("No se encontró el cliente con el ID proporcionado.");
+            view.displayErrorMessaje("No se encontró el cliente con el ID proporcionado.");
         }
     }
 
