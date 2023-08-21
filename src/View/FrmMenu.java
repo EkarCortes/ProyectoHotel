@@ -4,6 +4,8 @@
  */
 package View;
 
+import View.Empleado.FrmEmpleado;
+
 /**
  *
  * @author ekard
@@ -15,6 +17,7 @@ public class FrmMenu extends javax.swing.JFrame {
      */
     public FrmMenu() {
         initComponents();
+        View.maximize(this);
     }
 
     /**
@@ -26,22 +29,67 @@ public class FrmMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        DesktopPane = new javax.swing.JDesktopPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        btnCliente = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        btnEmpleado = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout DesktopPaneLayout = new javax.swing.GroupLayout(DesktopPane);
+        DesktopPane.setLayout(DesktopPaneLayout);
+        DesktopPaneLayout.setHorizontalGroup(
+            DesktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 521, Short.MAX_VALUE)
+        );
+        DesktopPaneLayout.setVerticalGroup(
+            DesktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 374, Short.MAX_VALUE)
+        );
+
+        btnCliente.setText("Administracion");
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/rating.png"))); // NOI18N
+        jMenuItem1.setText("Cliente");
+        btnCliente.add(jMenuItem1);
+
+        btnEmpleado.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/empleado.png"))); // NOI18N
+        btnEmpleado.setText("Empleado");
+        btnEmpleado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEmpleadoActionPerformed(evt);
+            }
+        });
+        btnCliente.add(btnEmpleado);
+
+        jMenuBar1.add(btnCliente);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(DesktopPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(DesktopPane)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmpleadoActionPerformed
+         FrmEmpleado frm = new  FrmEmpleado();
+        View.showInternal(DesktopPane, frm);
+    }//GEN-LAST:event_btnEmpleadoActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -73,10 +121,16 @@ public class FrmMenu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FrmMenu().setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JDesktopPane DesktopPane;
+    private javax.swing.JMenu btnCliente;
+    private javax.swing.JMenuItem btnEmpleado;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
