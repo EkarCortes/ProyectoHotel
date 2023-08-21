@@ -13,7 +13,8 @@ import javax.swing.JInternalFrame;
  * @author ekard
  * @param <Type>
  */
-public interface View<Type> {
+
+ public interface View<Type> {
  public static void maximize(JFrame frm){
  frm.setExtendedState(JFrame.MAXIMIZED_BOTH);
  }
@@ -36,4 +37,5 @@ public interface View<Type> {
  public void displayMessaje(String msj);
  public boolean displayConfirmMessaje(String msj);
  public void displayErrorMessaje(String msj);
+
 }
