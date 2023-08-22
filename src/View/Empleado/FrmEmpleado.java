@@ -4,13 +4,14 @@
  */
 package View.Empleado;
 
+
 import Controller.Empleado.EmpleadoController;
 import Models.Empleado.Empleado;
 import Models.Empleado.Puesto;
 import View.FrmMenu;
 import View.View;
 import javax.swing.JOptionPane;
-
+//import static Empleado.FrmTabla.tblEmpleados;
 
 /**
  *
@@ -20,6 +21,8 @@ public class FrmEmpleado extends javax.swing.JInternalFrame implements View<Empl
 
    
     private EmpleadoController controller;
+    
+    private FrmTabla frmtabla;
     public FrmEmpleado() {
         initComponents();
         this.controller = new EmpleadoController(this);
@@ -53,6 +56,8 @@ public class FrmEmpleado extends javax.swing.JInternalFrame implements View<Empl
         btnGuardar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
+
+        setClosable(true);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setForeground(new java.awt.Color(0, 204, 204));
@@ -93,6 +98,7 @@ public class FrmEmpleado extends javax.swing.JInternalFrame implements View<Empl
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Salario");
 
+        txtSalario.setEditable(false);
         txtSalario.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("########"))));
         txtSalario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -272,6 +278,7 @@ public class FrmEmpleado extends javax.swing.JInternalFrame implements View<Empl
         Empleado eliminarEmpleado = new Empleado(Identificacion);
         controller.delete(eliminarEmpleado);
         clear();
+         controller.readAll();
     } else {
         displayErrorMessaje("Ingrese la cédula del miembro a eliminar.");
     }
@@ -298,11 +305,11 @@ public class FrmEmpleado extends javax.swing.JInternalFrame implements View<Empl
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JFormattedTextField txtCedula;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JComboBox<String> txtPuesto;
-    private javax.swing.JFormattedTextField txtSalario;
-    private javax.swing.JFormattedTextField txtTelefono;
+    public static javax.swing.JFormattedTextField txtCedula;
+    public static javax.swing.JTextField txtNombre;
+    public static javax.swing.JComboBox<String> txtPuesto;
+    public static javax.swing.JFormattedTextField txtSalario;
+    public static javax.swing.JFormattedTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 
     
@@ -344,7 +351,6 @@ public class FrmEmpleado extends javax.swing.JInternalFrame implements View<Empl
 
     @Override
     public void displayAll(Empleado[] regs) {
-    
+       
     }
- 
 }

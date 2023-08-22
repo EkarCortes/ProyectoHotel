@@ -1,68 +1,84 @@
 package Controller.Habitación;
 
-import Models.Exceptions.HabitacionOcupadaException;
+import Controller.Controller;
 import Models.Habitación.Habitación;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import Models.Habitación.HabitacionList;
+import View.View;
+
 /**
- *
- * @author abiga
+ * Controlador para gestionar operaciones relacionadas con habitaciones.
+ * 
+ * author ekard
  */
+public class HabitacionController implements Controller<Habitación> {
 
-public class HabitacionController {
-    private Map<Integer, Habitación> habitaciones;  // Almacena las habitaciones por número
+    private HabitacionList habitacionList;
+    private View view;
 
-    public HabitacionController() {
-        habitaciones = new HashMap<>();
+    public HabitacionController(View view) {
+        habitacionList = HabitacionList.getInstance();
+        this.view = view;   
     }
+  
 
-    public void agregarHabitacion(int numero, String tipo) {
-        double precioSugerido = obtenerPrecioSugeridoPorTipo(tipo);
-        Habitación habitacion = new Habitación(numero, tipo, "Libre", precioSugerido);
-        habitaciones.put(numero, habitacion);
-    }
-
-    public void actualizarTipoHabitacion(int numero, String nuevoTipo) {
-        if (habitaciones.containsKey(numero)) {
-            Habitación habitacion = habitaciones.get(numero);
-            habitacion.setTipo(nuevoTipo);
+    @Override
+public void insert(Habitación habitacion) {
+    if (habitacion.isComplete()) {
+        // Verificar si la habitación ya existe en la lista
+        Habitación existingHabitacion = habitacionList.search(habitacion.getNumero());
+        
+        if (existingHabitacion == null) {
+            habitacionList.insert(habitacion);
+        } else {
+            // Si la habitación ya existe, actualizar los datos, excepto el número
+            existingHabitacion.setTipo(habitacion.getTipo());
+            existingHabitacion.setPrecio(habitacion.getPrecio());
         }
-    }
-
-   public void eliminarHabitacion(int numero) throws HabitacionOcupadaException {
-        if (habitaciones.containsKey(numero)) {
-            Habitación habitacion = habitaciones.get(numero);
-            if (habitacion.getEstado().equals("Ocupada")) {
-                throw new HabitacionOcupadaException(numero);
-            }
-            habitaciones.remove(numero);
-        }
-    }
-
-    public List<Habitación> buscarHabitaciones(String tipo) {
-        List<Habitación> habitacionesFiltradas = new ArrayList<>();
-        for (Habitación habitacion : habitaciones.values()) {
-            if (habitacion.getTipo().equalsIgnoreCase(tipo)) {
-                habitacionesFiltradas.add(habitacion);
-            }
-        }
-        return habitacionesFiltradas;
-    }
-
-    private double obtenerPrecioSugeridoPorTipo(String tipo) {
-        switch (tipo.toLowerCase()) {
-            case "individual":
-                return 45000;
-            case "doble":
-                return 80000;
-            case "suite":
-                return 140000;
-            default:
-                return 0;
-        }
+        
+        this.readAll();
+    } else {
+        view.displayErrorMessaje("Faltan datos. No se pudo agregar la habitación.");
     }
 }
 
+    @Override
+    public void update(Habitación habitacion) {
+        if (habitacionList.update(habitacion)) {
+            this.readAll();
+        } else {
+            view.displayErrorMessaje("No se puede actualizar la habitación. No se encontró en la lista.");
+        }
+    } 
+
+    @Override
+    public void delete(Habitación habitacion) {
+        try {
+            habitacionList.delete(habitacion);
+            this.readAll();
+            view.displayMessaje("Habitación eliminada con éxito.");
+       // } catch (HabitacionOcupadaException e) {
+         //   view.displayErrorMessaje("No se puede eliminar la habitación. Está ocupada.");
+        } catch (IllegalArgumentException e) {
+            view.displayErrorMessaje("No se puede eliminar la habitación. No se encontró en la lista.");
+        }
+    }
+
+    @Override
+    public void read(Object id) {
+        Habitación habitacion = habitacionList.search(id);
+        if (habitacion != null) {
+            view.display(habitacion);
+        } else {
+            view.displayErrorMessaje("No se encontró la habitación con el número proporcionado.");
+        }
+    }
+
+    @Override
+    public void readAll() {
+        Habitación[] habitaciones = habitacionList.toArray();
+        if (habitaciones.length > 0) {
+            view.displayAll(habitaciones);
+        }
+    }
+}
 

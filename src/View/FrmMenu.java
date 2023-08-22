@@ -4,7 +4,10 @@
  */
 package View;
 
+
+import View.Cliente.FrmClientes;
 import View.Empleado.FrmEmpleado;
+import View.Habitacion.FrmHabitacion;
 
 /**
  *
@@ -32,8 +35,9 @@ public class FrmMenu extends javax.swing.JFrame {
         DesktopPane = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnCliente = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        btnClientes = new javax.swing.JMenuItem();
         btnEmpleado = new javax.swing.JMenuItem();
+        btnHabitacion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,10 +54,15 @@ public class FrmMenu extends javax.swing.JFrame {
 
         btnCliente.setText("Administracion");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/rating.png"))); // NOI18N
-        jMenuItem1.setText("Cliente");
-        btnCliente.add(jMenuItem1);
+        btnClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/rating.png"))); // NOI18N
+        btnClientes.setText("Cliente");
+        btnClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClientesActionPerformed(evt);
+            }
+        });
+        btnCliente.add(btnClientes);
 
         btnEmpleado.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         btnEmpleado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/empleado.png"))); // NOI18N
@@ -64,6 +73,16 @@ public class FrmMenu extends javax.swing.JFrame {
             }
         });
         btnCliente.add(btnEmpleado);
+
+        btnHabitacion.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        btnHabitacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/habitacion.png"))); // NOI18N
+        btnHabitacion.setText("Habitación");
+        btnHabitacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHabitacionActionPerformed(evt);
+            }
+        });
+        btnCliente.add(btnHabitacion);
 
         jMenuBar1.add(btnCliente);
 
@@ -89,6 +108,16 @@ public class FrmMenu extends javax.swing.JFrame {
          FrmEmpleado frm = new  FrmEmpleado();
         View.showInternal(DesktopPane, frm);
     }//GEN-LAST:event_btnEmpleadoActionPerformed
+
+    private void btnClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClientesActionPerformed
+        FrmClientes frm = new  FrmClientes();
+        View.showInternal(DesktopPane, frm);
+    }//GEN-LAST:event_btnClientesActionPerformed
+
+    private void btnHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabitacionActionPerformed
+        FrmHabitacion frm = new  FrmHabitacion();
+        View.showInternal(DesktopPane, frm);
+    }//GEN-LAST:event_btnHabitacionActionPerformed
     
     /**
      * @param args the command line arguments
@@ -129,8 +158,9 @@ public class FrmMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JDesktopPane DesktopPane;
     private javax.swing.JMenu btnCliente;
+    private javax.swing.JMenuItem btnClientes;
     private javax.swing.JMenuItem btnEmpleado;
+    private javax.swing.JMenuItem btnHabitacion;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }

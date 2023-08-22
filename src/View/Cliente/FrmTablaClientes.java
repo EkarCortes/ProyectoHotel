@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package View.Empleado;
+package View.Cliente;
 
-import Controller.Controller;
-import Controller.Empleado.EmpleadoController;
-import Models.Empleado.Empleado;
+import Controller.Clientes.ClientesController;
+import Models.Clientes.Clientes;
 import View.Tabla;
 import View.View;
 import java.awt.event.KeyEvent;
@@ -17,27 +16,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ekard
  */
-public class FrmTabla extends javax.swing.JInternalFrame implements View<Empleado> {
+public class FrmTablaClientes extends javax.swing.JInternalFrame implements View<Clientes> {
 
-    private Empleado empleado;
-    private EmpleadoController empleadocontroller;
-    private Controller controller;
-    private FrmEmpleado frmempleado;
-    
-    public FrmTabla( ) {
+    private Clientes cliente;
+    private ClientesController clientescontroller;
+    public FrmTablaClientes() {
         initComponents();
-        
-        this.empleadocontroller = new EmpleadoController(this);
-        this.empleadocontroller.readAll();
-        
-        
-        
-        
+         this.clientescontroller= new ClientesController(this);
+        this.clientescontroller.readAll();
     }
-    public void setController(Controller controller) {
-        this.controller = controller;
-
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -49,49 +36,41 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblEmpleados = new javax.swing.JTable();
+        tblClientes = new javax.swing.JTable();
         txtFiltro = new javax.swing.JTextField();
 
         setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
-        setIconifiable(true);
 
-        tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Cedula", "Nombre", "Telefono", "Puesto", "Salario"
+                "Identificación", "Nombre", "Telefono", "FechaNacimiento", "Edad", "Correo"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, true, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        tblEmpleados.setColumnSelectionAllowed(true);
-        tblEmpleados.getTableHeader().setReorderingAllowed(false);
-        tblEmpleados.addMouseListener(new java.awt.event.MouseAdapter() {
+        tblClientes.setColumnSelectionAllowed(true);
+        tblClientes.getTableHeader().setReorderingAllowed(false);
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblEmpleadosMouseClicked(evt);
+                tblClientesMouseClicked(evt);
             }
         });
-        tblEmpleados.addKeyListener(new java.awt.event.KeyAdapter() {
+        tblClientes.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                tblEmpleadosKeyReleased(evt);
+                tblClientesKeyReleased(evt);
             }
         });
-        jScrollPane1.setViewportView(tblEmpleados);
+        jScrollPane1.setViewportView(tblClientes);
+        tblClientes.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         txtFiltro.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -107,7 +86,7 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
                     .addComponent(txtFiltro))
                 .addContainerGap())
         );
@@ -124,40 +103,38 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tblEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmpleadosMouseClicked
-          if (evt.getClickCount() == 2) { // Verificar si hubo 2 clics (doble clic)
-            int row = tblEmpleados.getSelectedRow();
-            Object id = tblEmpleados.getValueAt(row, 0);
-            
-            this.controller.read(id); 
-        }
-        
-    }//GEN-LAST:event_tblEmpleadosMouseClicked
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+        if (evt.getClickCount() == 2) { // Verificar si hubo 2 clics (doble clic)
+            int row = this.tblClientes.getSelectedRow();
+            Object id = tblClientes.getValueAt(row, 0);
 
-    private void tblEmpleadosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblEmpleadosKeyReleased
-         if (evt.getKeyCode()==KeyEvent.VK_DELETE){
-            int row = tblEmpleados.getSelectedRow();
+            this.clientescontroller.read(id);
+        }
+
+    }//GEN-LAST:event_tblClientesMouseClicked
+
+    private void tblClientesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblClientesKeyReleased
+        if (evt.getKeyCode()==KeyEvent.VK_DELETE){
+            int row = this.tblClientes.getSelectedRow();
             if (row>-1){
-                Object id = tblEmpleados.getValueAt(row, 0);
-                this.controller.delete(new Empleado(id.toString()));
+                Object id = tblClientes.getValueAt(row, 0);
+                this.clientescontroller.delete(new Clientes(id.toString()));
             }
         }
-        
-    }//GEN-LAST:event_tblEmpleadosKeyReleased
+
+    }//GEN-LAST:event_tblClientesKeyReleased
 
     private void txtFiltroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyReleased
-           Tabla.filter(tblEmpleados,txtFiltro.getText());
+        Tabla.filter(tblClientes,txtFiltro.getText());
     }//GEN-LAST:event_txtFiltroKeyReleased
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    public static javax.swing.JTable tblEmpleados;
+    public static javax.swing.JTable tblClientes;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 
-    
     @Override
     public void clear() {
       txtFiltro.setText(""); 
@@ -166,14 +143,14 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
    
      
    @Override
-    public void displayAll(Empleado[] regs) {
-       DefaultTableModel tableModel=(DefaultTableModel) tblEmpleados.getModel();
+    public void displayAll(Clientes[] regs) {
+       DefaultTableModel tableModel=(DefaultTableModel) tblClientes.getModel();
        tableModel.setNumRows(0);
-       for(Empleado empleado:regs){
-           Object[] Data=empleado.toArrayObject();
+       for(Clientes clientes:regs){
+           Object[] Data=clientes.toArrayObject();
             tableModel.addRow(Data);
         }   
-        tblEmpleados.setModel(tableModel);
+        tblClientes.setModel(tableModel);
     }
 
     @Override
@@ -193,9 +170,7 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
     }
 
     @Override
-    public void display(Empleado regs) {
-        
-                
+    public void display(Clientes regs) {
       /*  if (empleado != null) {
         txtCedula.setText(empleado.getIdentificacion());
         txtNombre.setText(empleado.getNombre());

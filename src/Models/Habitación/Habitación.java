@@ -1,31 +1,46 @@
 package Models.Habitación;
 
+import Models.Entity;
+
 /**
  * @author abiga
  */
-public class Habitación {
+public class Habitación implements Entity{
     private int numero;
     private String tipo;
-    private String Estado;
+    private boolean Ocupado;
     private double precio;
 
-     public Habitación(int numero, String tipo, String Estado, double precio) {
+     public Habitación(int numero, String tipo, boolean Ocupado, double precio) {
         this.numero = numero;
         this.tipo = tipo;
-        this.Estado = Estado;
+        this.Ocupado = Ocupado;
         this.precio = precio;
     }
      public Habitación() {
         this.numero = 0;
         this.tipo = "";
-        this.Estado = "";
+        this.Ocupado = false;
         this.precio = 0.0;
     }
    public Habitación(int numero, String tipo) {
         this.numero = numero;
         this.tipo = tipo;
-        this.Estado = "";
+        this.Ocupado = false;
         this.precio = 0.0;
+    }
+
+    public Habitación(int numero) {
+        this.numero= numero;
+    }
+
+  
+
+    public Habitación(int numero, String tipo, int precio, boolean ocupado) {
+        this.numero = numero;
+        this.tipo = tipo;
+        this.precio = precio;
+        this.Ocupado = ocupado;
     }
 
     public int getNumero() {
@@ -36,16 +51,16 @@ public class Habitación {
         return tipo;
     }
 
-    public String getEstado() {
-        return Estado;
+    public boolean getOcupado() {
+        return Ocupado;
     }
 
     public double getPrecio() {
         return precio;
     }
 
-    public void setEstado(String Estado) {
-        this.Estado = Estado;
+    public void setOcupado(boolean Ocupado) {
+        this.Ocupado = Ocupado;
     }
 
     public void setPrecio(double precio) {
@@ -55,10 +70,35 @@ public class Habitación {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+    
+    public boolean Ocupado(){
+        return Ocupado;
+    }
+    
+    public String Estado(){
+        if(this.Ocupado){
+            return "Ocupada";
+        }else{
+            return "Disponible";
+        }   
+         
+    }
+    
    
      @Override
     public String toString() {
-        return "Habitación [numero=" + numero + ", tipo=" + tipo + ", Estado=" + Estado + ", precio=" + precio + "]";
+        return "Habitación [numero=" + numero + ", tipo=" + tipo + ", Estado=" + Ocupado + ", precio=" + precio + "]";
+    }
+
+    @Override
+    public boolean isComplete() {
+    return numero > 0 && !tipo.isEmpty() && precio > 0.0;
+}
+
+
+   @Override
+    public Object[] toArrayObject() {
+        return new Object[] { getNumero(), getTipo(),this.Estado(),getPrecio() };
     }
 }
 
