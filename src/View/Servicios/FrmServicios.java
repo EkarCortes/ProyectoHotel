@@ -230,6 +230,7 @@ public class FrmServicios extends javax.swing.JInternalFrame implements View<Ser
     }else{
     servicioController.addNewService(nombre, descripcion, precio);     
     clear();
+    servicioController.readAll();
     }
     }catch (NumberFormatException e){
        displayErrorMessage("El precio debe ser un numero valido");
@@ -286,6 +287,7 @@ public class FrmServicios extends javax.swing.JInternalFrame implements View<Ser
         }
         servicioController.update(servicioSeleccionado);
         clear();
+        servicioController.readAll();
         }else{
            displayErrorMessage("Seleccione un campo de la tabla.");
                }
