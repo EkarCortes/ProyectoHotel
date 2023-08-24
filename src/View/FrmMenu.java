@@ -8,6 +8,7 @@ package View;
 import View.Cliente.FrmClientes;
 import View.Empleado.FrmEmpleado;
 import View.Habitacion.FrmHabitacion;
+import View.Reserva.FrmReserva;
 import View.Servicios.FrmServicios;
 
 /**
@@ -39,7 +40,8 @@ public class FrmMenu extends javax.swing.JFrame {
         btnClientes = new javax.swing.JMenuItem();
         btnEmpleado = new javax.swing.JMenuItem();
         btnHabitacion = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        Servicio = new javax.swing.JMenuItem();
+        Reserva = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,9 +53,10 @@ public class FrmMenu extends javax.swing.JFrame {
         );
         DesktopPaneLayout.setVerticalGroup(
             DesktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 374, Short.MAX_VALUE)
+            .addGap(0, 366, Short.MAX_VALUE)
         );
 
+        btnCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/administracion.png"))); // NOI18N
         btnCliente.setText("Administracion");
 
         btnClientes.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -86,13 +89,25 @@ public class FrmMenu extends javax.swing.JFrame {
         });
         btnCliente.add(btnHabitacion);
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        Servicio.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        Servicio.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/atencion-al-cliente.png"))); // NOI18N
+        Servicio.setText("Servicio");
+        Servicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                ServicioActionPerformed(evt);
             }
         });
-        btnCliente.add(jMenuItem1);
+        btnCliente.add(Servicio);
+
+        Reserva.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        Reserva.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/reserva.png"))); // NOI18N
+        Reserva.setText("Reserva");
+        Reserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReservaActionPerformed(evt);
+            }
+        });
+        btnCliente.add(Reserva);
 
         jMenuBar1.add(btnCliente);
 
@@ -129,10 +144,15 @@ public class FrmMenu extends javax.swing.JFrame {
         View.showInternal(DesktopPane, frm);
     }//GEN-LAST:event_btnHabitacionActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void ServicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ServicioActionPerformed
      FrmServicios frmServicios = new FrmServicios();
      View.showInternal(DesktopPane, frmServicios);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_ServicioActionPerformed
+
+    private void ReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReservaActionPerformed
+     FrmReserva frmreserva = new FrmReserva();
+     View.showInternal(DesktopPane, frmreserva);
+    }//GEN-LAST:event_ReservaActionPerformed
     
     /**
      * @param args the command line arguments
@@ -172,11 +192,12 @@ public class FrmMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JDesktopPane DesktopPane;
+    private javax.swing.JMenuItem Reserva;
+    private javax.swing.JMenuItem Servicio;
     private javax.swing.JMenu btnCliente;
     private javax.swing.JMenuItem btnClientes;
     private javax.swing.JMenuItem btnEmpleado;
     private javax.swing.JMenuItem btnHabitacion;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
