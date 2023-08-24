@@ -24,7 +24,6 @@ public class HabitacionList implements List<Habitación> {
     public boolean insert(Habitación habitacion) {
         if (habitacion != null && habitacion.isComplete()) {
             habitaciones.put(habitacion.getNumero(), habitacion);
-            showAll();
             return true;
         }
         return false;

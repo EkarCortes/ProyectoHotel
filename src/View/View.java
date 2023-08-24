@@ -14,6 +14,7 @@ import javax.swing.JInternalFrame;
  * @param <Type>
  */
 
+
  public interface View<Type> {
  public static void maximize(JFrame frm){
  frm.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -30,12 +31,9 @@ import javax.swing.JInternalFrame;
  desk.add(frm);
  frm.setVisible(true);
  }
-
- public void clear();
- public void display(Type regs);
- public void displayAll(Type[] regs);
- public void displayMessaje(String msj);
- public boolean displayConfirmMessaje(String msj);
- public void displayErrorMessaje(String msj);
-
+    void clear();
+    void display(Type obj);
+    void displayMessage(String message);
+    boolean displayConfirmMessage(String message);
+    void displayErrorMessage(String message);
 }

@@ -28,9 +28,9 @@ public class Clientes extends Persona implements Entity{
         this.Correo = "";
     }
 
-    public Clientes(int identificacion, String nombre, int telefono, Date fechaNacimiento, String correo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+//    public Clientes(int identificacion, String nombre, int telefono, Date fechaNacimiento, String correo) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
      public Date getFechaDeNacimiento() {
         return fechaNacimiento;
     }

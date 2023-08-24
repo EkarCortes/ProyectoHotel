@@ -7,37 +7,38 @@ package View.Empleado;
 import Controller.Controller;
 import Controller.Empleado.EmpleadoController;
 import Models.Empleado.Empleado;
+import View.Search;
 import View.Tabla;
-import View.View;
 import java.awt.event.KeyEvent;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ekard
  */
-public class FrmTabla extends javax.swing.JInternalFrame implements View<Empleado> {
+public class FrmTabla extends javax.swing.JInternalFrame implements Search<Empleado> {
 
     private Empleado empleado;
-    private EmpleadoController empleadocontroller;
+    private EmpleadoController empleadoController;
     private Controller controller;
     private FrmEmpleado frmempleado;
+    private boolean EmpleadoSelected = false;
+  private Empleado selectedEmpleado;
     
-    public FrmTabla( ) {
+    
+    public void setEmpleadoController(EmpleadoController empleadoController) {
+        this.empleadoController = empleadoController;
+        empleadoController.readAll();
+    }
+
+    
+    public FrmTabla(FrmEmpleado frmEmpleado) {
         initComponents();
-        
-        this.empleadocontroller = new EmpleadoController(this);
-        this.empleadocontroller.readAll();
-        
-        
-        
-        
+        this.frmempleado= frmEmpleado;   
     }
     public void setController(Controller controller) {
         this.controller = controller;
-
-}
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -126,10 +127,9 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
 
     private void tblEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmpleadosMouseClicked
           if (evt.getClickCount() == 2) { // Verificar si hubo 2 clics (doble clic)
-            int row = tblEmpleados.getSelectedRow();
+            int row = this.tblEmpleados.getSelectedRow();
             Object id = tblEmpleados.getValueAt(row, 0);
-            
-            this.controller.read(id); 
+            this.empleadoController.read(id); 
         }
         
     }//GEN-LAST:event_tblEmpleadosMouseClicked
@@ -156,15 +156,6 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
     public static javax.swing.JTable tblEmpleados;
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
-
-    
-    @Override
-    public void clear() {
-      txtFiltro.setText(""); 
-    }
-
-   
-     
    @Override
     public void displayAll(Empleado[] regs) {
        DefaultTableModel tableModel=(DefaultTableModel) tblEmpleados.getModel();
@@ -175,37 +166,15 @@ public class FrmTabla extends javax.swing.JInternalFrame implements View<Emplead
         }   
         tblEmpleados.setModel(tableModel);
     }
-
-    @Override
-    public void displayMessaje(String msj) {
-       JOptionPane.showMessageDialog(this, msj, "Información Importante", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void displayErrorMessaje(String msj) {
-        JOptionPane.showMessageDialog(this, msj, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    @Override
-    public boolean displayConfirmMessaje(String msj) {
-       int result = JOptionPane.showConfirmDialog(this, msj, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        return result == JOptionPane.YES_OPTION;
-    }
-
-    @Override
-    public void display(Empleado regs) {
-        
-                
-      /*  if (empleado != null) {
-        txtCedula.setText(empleado.getIdentificacion());
-        txtNombre.setText(empleado.getNombre());
-        txtTelefono.setText(empleado.getTelefono());
-        //txtSalario.setText(empleado.setSalario(double));
-        txtPuesto.setSelectedItem(empleado.getPuesto().toString());
-    } else {
-        clear(); // Limpiar las cajas de texto si el miembro no se encuentra
-    }
-*/
-
+    public boolean isEmpleadoSelected() {
+    return selectedEmpleado != null ;
 }
+
+public Empleado getSelecteEmpleado() {
+    return selectedEmpleado;
+}
+ public void setFrmServicios(FrmEmpleado frmEmpleados) {
+        this.frmempleado = frmEmpleados;
     }
+}
+

@@ -6,24 +6,28 @@ package View.Cliente;
 
 import Controller.Clientes.ClientesController;
 import Models.Clientes.Clientes;
+import View.Search;
 import View.Tabla;
-import View.View;
-import java.awt.event.KeyEvent;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ekard
  */
-public class FrmTablaClientes extends javax.swing.JInternalFrame implements View<Clientes> {
-
-    private Clientes cliente;
+public class FrmTablaClientes extends javax.swing.JInternalFrame implements Search<Clientes> {
+    private FrmClientes frmclientes;
     private ClientesController clientescontroller;
-    public FrmTablaClientes() {
+    private boolean clienteSelected = false;
+    private Clientes selectedClientes;
+    
+    public void setClientesController(ClientesController clientesController) {
+        this.clientescontroller = clientesController;
+       clientesController.readAll();
+    }
+    public FrmTablaClientes(FrmClientes frmClientes) {
         initComponents();
-         this.clientescontroller= new ClientesController(this);
-        this.clientescontroller.readAll();
+         this.frmclientes = frmClientes;
+       // this.clientescontroller.readAll();
     }
 
     /**
@@ -114,14 +118,13 @@ public class FrmTablaClientes extends javax.swing.JInternalFrame implements View
     }//GEN-LAST:event_tblClientesMouseClicked
 
     private void tblClientesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblClientesKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_DELETE){
-            int row = this.tblClientes.getSelectedRow();
-            if (row>-1){
-                Object id = tblClientes.getValueAt(row, 0);
-                this.clientescontroller.delete(new Clientes(id.toString()));
-            }
-        }
-
+//        if (evt.getKeyCode()==KeyEvent.VK_DELETE){
+//            int row = this.tblClientes.getSelectedRow();
+//            if (row>-1){
+//                Object id = tblClientes.getValueAt(row, 0);
+//                this.clientescontroller.delete(new Clientes(id.toString()));
+//            }
+//        }
     }//GEN-LAST:event_tblClientesKeyReleased
 
     private void txtFiltroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroKeyReleased
@@ -135,7 +138,6 @@ public class FrmTablaClientes extends javax.swing.JInternalFrame implements View
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 
-    @Override
     public void clear() {
       txtFiltro.setText(""); 
     }
@@ -152,35 +154,19 @@ public class FrmTablaClientes extends javax.swing.JInternalFrame implements View
         }   
         tblClientes.setModel(tableModel);
     }
-
-    @Override
-    public void displayMessaje(String msj) {
-       JOptionPane.showMessageDialog(this, msj, "Información Importante", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void displayErrorMessaje(String msj) {
-        JOptionPane.showMessageDialog(this, msj, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    @Override
-    public boolean displayConfirmMessaje(String msj) {
-       int result = JOptionPane.showConfirmDialog(this, msj, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        return result == JOptionPane.YES_OPTION;
-    }
-
-    @Override
-    public void display(Clientes regs) {
-      /*  if (empleado != null) {
-        txtCedula.setText(empleado.getIdentificacion());
-        txtNombre.setText(empleado.getNombre());
-        txtTelefono.setText(empleado.getTelefono());
-        //txtSalario.setText(empleado.setSalario(double));
-        txtPuesto.setSelectedItem(empleado.getPuesto().toString());
-    } else {
-        clear(); // Limpiar las cajas de texto si el miembro no se encuentra
-    }
-*/
-
+      
+    public void waitForClose() {
+    setVisible(true); 
 }
+
+public boolean isClienteSelected() {
+    return selectedClientes != null ;
+}
+
+public Clientes getSelectedCliente() {
+    return selectedClientes;
+}
+ public void setFrmClientes(FrmClientes frmClientes) {
+        this.frmclientes = frmClientes;
     }
+}

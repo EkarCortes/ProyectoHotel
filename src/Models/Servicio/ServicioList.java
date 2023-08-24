@@ -1,25 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Models.Servicio;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServicioList {
+ private static ServicioList servicioList;
  private List<Servicio> servicios;
  public ServicioList() {
  servicios= new ArrayList<>();
     }
+  public static ServicioList getInstance() {
+        if (servicioList == null) {
+            servicioList = new ServicioList();
+        }
+        return servicioList;
+    }
 
     public boolean insert(Servicio servicio) {
+    int newCode = getNextAvailableCode(); 
+    servicio.setCodigo(newCode); 
         return servicios.add(servicio);
     }
 
     public boolean update(Servicio servicioActualizado) {
     for (int i = 0; i < servicios.size(); i++) {
-        Servicio servicioExistente = servicios.get(i); // Cambia el nombre aquí
+        Servicio servicioExistente = servicios.get(i); 
         if (servicioExistente.getCodigo() == servicioActualizado.getCodigo()) {
             servicios.set(i, servicioActualizado);
             return true;
@@ -40,8 +46,16 @@ public class ServicioList {
         }
         return null;
     }
-
+                                            
     public Servicio[] toArray() {
         return servicios.toArray(new Servicio[0]);
     }
+    private int getNextAvailableCode() {
+        int maxCode = 0;
+        for (Servicio servicio : servicios) {
+            maxCode = Math.max(maxCode, servicio.getCodigo());
+        }
+        return maxCode + 1; 
+    }
+
 }

@@ -8,6 +8,7 @@ package View;
 import View.Cliente.FrmClientes;
 import View.Empleado.FrmEmpleado;
 import View.Habitacion.FrmHabitacion;
+import View.Servicios.FrmServicios;
 
 /**
  *
@@ -38,6 +39,7 @@ public class FrmMenu extends javax.swing.JFrame {
         btnClientes = new javax.swing.JMenuItem();
         btnEmpleado = new javax.swing.JMenuItem();
         btnHabitacion = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,6 +86,14 @@ public class FrmMenu extends javax.swing.JFrame {
         });
         btnCliente.add(btnHabitacion);
 
+        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        btnCliente.add(jMenuItem1);
+
         jMenuBar1.add(btnCliente);
 
         setJMenuBar(jMenuBar1);
@@ -118,6 +128,11 @@ public class FrmMenu extends javax.swing.JFrame {
         FrmHabitacion frm = new  FrmHabitacion();
         View.showInternal(DesktopPane, frm);
     }//GEN-LAST:event_btnHabitacionActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+     FrmServicios frmServicios = new FrmServicios();
+     View.showInternal(DesktopPane, frmServicios);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
     
     /**
      * @param args the command line arguments
@@ -162,5 +177,6 @@ public class FrmMenu extends javax.swing.JFrame {
     private javax.swing.JMenuItem btnEmpleado;
     private javax.swing.JMenuItem btnHabitacion;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }

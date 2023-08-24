@@ -2,11 +2,11 @@ package View.Cliente;
 
 import Controller.Clientes.ClientesController;
 import Models.Clientes.Clientes;
-import View.FrmMenu;
 import View.View;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 /**
  *
@@ -14,10 +14,12 @@ import javax.swing.JOptionPane;
  */
 public class FrmClientes extends javax.swing.JInternalFrame implements View<Clientes>{
     private ClientesController clientesController;
+     private Clientes clientesSeleccionado;
     
     public FrmClientes() {
         initComponents();
         clientesController = new ClientesController(this); 
+        clientesController.readAll();
     }
 
     /**
@@ -285,12 +287,13 @@ public class FrmClientes extends javax.swing.JInternalFrame implements View<Clie
         clientesController.insert(newCliente);
 
         clear();
+        clientesController.readAll();
 
-        displayMessaje("Cliente agregado exitosamente.");
+        displayMessage("Cliente agregado exitosamente.");
     } catch (NumberFormatException e) {
-        displayErrorMessaje("Error: Ingresa un número válido para la identificación o el teléfono.");
+        displayErrorMessage("Error: Ingresa un número válido para la identificación o el teléfono.");
     } catch (ParseException e) {
-        displayErrorMessaje("Error: Ingresa una fecha válida en el formato yyyy-MM-dd.");
+        displayErrorMessage("Error: Ingresa una fecha válida en el formato yyyy-MM-dd.");
     }
     
     
@@ -302,16 +305,19 @@ public class FrmClientes extends javax.swing.JInternalFrame implements View<Clie
         Clientes cliente = new Clientes(Identificacion);
         clientesController.delete(cliente);
         clear();
+        clientesController.readAll();
     } else {
-        displayErrorMessaje("Ingrese la cédula del miembro a eliminar.");
+        displayErrorMessage("Ingrese la cédula del miembro a eliminar.");
     }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        FrmTablaClientes frm = new FrmTablaClientes();
-        FrmMenu.DesktopPane.add(frm);
-        frm.toFront();
-        frm.setVisible(true);
+     FrmTablaClientes frmbuscarclientes = new FrmTablaClientes(this); 
+    JDesktopPane desktopPane = getDesktopPane(); 
+    desktopPane.add(frmbuscarclientes);
+    this.clientesController.setSearch(frmbuscarclientes);
+    frmbuscarclientes.setClientesController(clientesController);
+    frmbuscarclientes.setVisible(true);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtidentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidentificacionActionPerformed
@@ -393,23 +399,23 @@ public class FrmClientes extends javax.swing.JInternalFrame implements View<Clie
 }
 
     @Override
-    public void displayMessaje(String msj) {
+    public void displayMessage(String msj) {
        JOptionPane.showMessageDialog(this, msj, "Información Importante", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
-    public void displayErrorMessaje(String msj) {
+    public void displayErrorMessage(String msj) {
         JOptionPane.showMessageDialog(this, msj, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
-    public boolean displayConfirmMessaje(String msj) {
+    public boolean displayConfirmMessage(String msj) {
        int result = JOptionPane.showConfirmDialog(this, msj, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return result == JOptionPane.YES_OPTION;
     }
 
-    @Override
-    public void displayAll(Clientes[] regs) {
-      
-    }
+  public void setlienteSeleccionado(Clientes clienteSeleccionado) {
+    this.clientesSeleccionado = clienteSeleccionado;
+    display(clientesSeleccionado); // Esto actualiza los campos en FrmServicios
+}
 }

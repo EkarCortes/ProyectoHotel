@@ -3,29 +3,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package View.Habitacion;
-
-import Controller.Controller;
 import Controller.Habitación.HabitacionController;
 import Models.Habitación.Habitación;
+import View.Search;
 import View.Tabla;
-import View.View;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ekard
  */
-public class FrmTablaHabitacion extends javax.swing.JInternalFrame implements View<Habitación>{
-
-    private Habitación habitacion;
+public class FrmTablaHabitacion extends javax.swing.JInternalFrame implements Search<Habitación>{
+    private FrmHabitacion frmHabitacion;
     private HabitacionController habitacioncontroller;
-    private Controller controller;
+    private boolean habitacionSelected = false;
+    private Habitación selectedHabitacion;
     
-    public FrmTablaHabitacion() {
+public void setHabitacionController(HabitacionController habitacionController) {
+        this.habitacioncontroller = habitacionController;
+        habitacionController.readAll();
+    }
+        
+    public FrmTablaHabitacion(FrmHabitacion frmHabitacion) {
         initComponents();
-        this.habitacioncontroller = new HabitacionController(this);
-        this.habitacioncontroller.readAll();
+        this.frmHabitacion=frmHabitacion;
         
     }
 
@@ -117,7 +118,11 @@ public class FrmTablaHabitacion extends javax.swing.JInternalFrame implements Vi
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblHabitacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHabitacionesMouseClicked
-        //HACER DESPUES
+       if (evt.getClickCount() == 2) { // Verificar si hubo 2 clics (doble clic)
+            int row = this.tblHabitaciones.getSelectedRow();
+            Object id = tblHabitaciones.getValueAt(row, 0);
+            this.habitacioncontroller.read(id); 
+        }
     }//GEN-LAST:event_tblHabitacionesMouseClicked
 
     private void tblHabitacionesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblHabitacionesKeyReleased
@@ -135,15 +140,7 @@ public class FrmTablaHabitacion extends javax.swing.JInternalFrame implements Vi
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void display(Habitación regs) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   
 
     @Override
     public void displayAll(Habitación[] regs) {
@@ -156,20 +153,5 @@ public class FrmTablaHabitacion extends javax.swing.JInternalFrame implements Vi
         tblHabitaciones.setModel(tableModel);
     }
     
-  @Override
-    public void displayMessaje(String msj) {
-       JOptionPane.showMessageDialog(this, msj, "Información Importante", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void displayErrorMessaje(String msj) {
-        JOptionPane.showMessageDialog(this, msj, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    @Override
-    public boolean displayConfirmMessaje(String msj) {
-       int result = JOptionPane.showConfirmDialog(this, msj, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        return result == JOptionPane.YES_OPTION;
-    }
 }
    

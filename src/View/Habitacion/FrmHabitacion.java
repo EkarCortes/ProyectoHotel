@@ -7,6 +7,7 @@ import Models.Habitación.TipoHabitacion;
 import View.FrmMenu;
 //import static View.Habitacion.FrmTablaHabitacion.tblHabitaciones;
 import View.View;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 /**
  *
@@ -14,14 +15,13 @@ import javax.swing.JOptionPane;
  */
 public class FrmHabitacion extends javax.swing.JInternalFrame implements View<Habitación>{
     
-    private HabitacionController controller;
-    private FrmTablaHabitacion frmtablahabitacion;
-    
-      
+    private HabitacionController habitacioncontroller;
+    private Habitación habitacionSeleccionada; 
     public FrmHabitacion() {
         initComponents();
-        this.controller = new HabitacionController(this);
+        habitacioncontroller = new HabitacionController(this);
         this.loadHabitaciones();
+        habitacioncontroller.readAll();
     }
     
     private void loadHabitaciones() {
@@ -231,7 +231,7 @@ public class FrmHabitacion extends javax.swing.JInternalFrame implements View<Ha
     try {
         numero = Integer.parseInt(txtHabitacion.getText());
     } catch (NumberFormatException ex) {
-        displayErrorMessaje("El número de habitación debe ser un valor numérico.");
+        displayErrorMessage("El número de habitación debe ser un valor numérico.");
         return;
     }
     
@@ -240,20 +240,20 @@ public class FrmHabitacion extends javax.swing.JInternalFrame implements View<Ha
     try {
         precio = Integer.parseInt(txtPrecio.getText());
     } catch (NumberFormatException ex) {
-        displayErrorMessaje("El precio debe ser un valor numérico.");
+        displayErrorMessage("El precio debe ser un valor numérico.");
         return;
     }
 
     boolean ocupado = false; 
     if (numero > 0 && precio >= 0) {
         Habitación habitacion = new Habitación(numero, tipo, precio, ocupado);
-        controller.insert(habitacion);
+        habitacioncontroller.insert(habitacion);
         clear();
-        controller.readAll();
+        //habitacioncontroller.readAll();   ->SUJETA A CAMBIOS 
 
         JOptionPane.showMessageDialog(this, "Habitación agregada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);  
     } else {
-        displayErrorMessaje("Número de habitación y precio deben ser valores positivos.");
+        displayErrorMessage("Número de habitación y precio deben ser valores positivos.");
     }
 
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -263,20 +263,24 @@ public class FrmHabitacion extends javax.swing.JInternalFrame implements View<Ha
     try {
         numero = Integer.parseInt(txtHabitacion.getText());
     } catch (NumberFormatException ex) {
-        displayErrorMessaje("El número de habitación debe ser un valor numérico.");
+        displayErrorMessage("El número de habitación debe ser un valor numérico.");
         return;
     }
 
         Habitación habitacion = new Habitación(numero); // Solo se necesita el número para eliminar
-        controller.delete(habitacion);
+        habitacioncontroller.delete(habitacion);
+        clear();
+        habitacioncontroller.readAll();
     
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        FrmTablaHabitacion frm = new FrmTablaHabitacion();
-        FrmMenu.DesktopPane.add(frm);
-        frm.toFront();
-        frm.setVisible(true);
+     FrmTablaHabitacion buscarHabitacion = new FrmTablaHabitacion(this); 
+    JDesktopPane desktopPane = getDesktopPane(); 
+    desktopPane.add(buscarHabitacion );
+    this.habitacioncontroller.setSearch(buscarHabitacion );
+    buscarHabitacion.setHabitacionController(habitacioncontroller);
+    buscarHabitacion.setVisible(true);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTipoHabitacionActionPerformed
@@ -315,28 +319,32 @@ public class FrmHabitacion extends javax.swing.JInternalFrame implements View<Ha
 
     @Override
     public void display(Habitación habitacion) {
-      //HACER LUEGO
+        if (habitacion != null) {
+        txtHabitacion.setText(String.valueOf(habitacion.getNumero()));
+        txtTipoHabitacion.setSelectedItem(habitacion.getTipo());
+        txtPrecio.setText(String.valueOf(habitacion.getPrecio()));  
+    } else {
+        clear(); 
     }
-
-    @Override
-    public void displayAll(Habitación[] regs) {
-        
     }
-
     
     @Override
-    public void displayMessaje(String msj) {
+    public void displayMessage(String msj) {
        JOptionPane.showMessageDialog(this, msj, "Información Importante", JOptionPane.INFORMATION_MESSAGE);
     }
 
     @Override
-    public void displayErrorMessaje(String msj) {
+    public void displayErrorMessage(String msj) {
         JOptionPane.showMessageDialog(this, msj, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     @Override
-    public boolean displayConfirmMessaje(String msj) {
+    public boolean displayConfirmMessage(String msj) {
        int result = JOptionPane.showConfirmDialog(this, msj, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return result == JOptionPane.YES_OPTION;
     }
+    public void setServicioSeleccionado(Habitación habitacionSeleccionada) {
+    this.habitacionSeleccionada = habitacionSeleccionada;
+    display(habitacionSeleccionada); 
+}
 }

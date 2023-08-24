@@ -3,6 +3,7 @@ package Controller.Habitación;
 import Controller.Controller;
 import Models.Habitación.Habitación;
 import Models.Habitación.HabitacionList;
+import View.Search;
 import View.View;
 
 /**
@@ -13,9 +14,10 @@ import View.View;
 public class HabitacionController implements Controller<Habitación> {
 
     private HabitacionList habitacionList;
-    private View view;
+    private View <Habitación> view;
+    private Search <Habitación> search;
 
-    public HabitacionController(View view) {
+    public HabitacionController(View <Habitación>view) {
         habitacionList = HabitacionList.getInstance();
         this.view = view;   
     }
@@ -35,18 +37,18 @@ public void insert(Habitación habitacion) {
             existingHabitacion.setPrecio(habitacion.getPrecio());
         }
         
-        this.readAll();
+        //this.readAll();
     } else {
-        view.displayErrorMessaje("Faltan datos. No se pudo agregar la habitación.");
+        view.displayErrorMessage("Faltan datos. No se pudo agregar la habitación.");
     }
 }
 
     @Override
     public void update(Habitación habitacion) {
         if (habitacionList.update(habitacion)) {
-            this.readAll();
+           // this.readAll();
         } else {
-            view.displayErrorMessaje("No se puede actualizar la habitación. No se encontró en la lista.");
+            view.displayErrorMessage("No se puede actualizar la habitación. No se encontró en la lista.");
         }
     } 
 
@@ -54,12 +56,12 @@ public void insert(Habitación habitacion) {
     public void delete(Habitación habitacion) {
         try {
             habitacionList.delete(habitacion);
-            this.readAll();
-            view.displayMessaje("Habitación eliminada con éxito.");
+           // this.readAll();
+            view.displayMessage("Habitación eliminada con éxito.");
        // } catch (HabitacionOcupadaException e) {
          //   view.displayErrorMessaje("No se puede eliminar la habitación. Está ocupada.");
         } catch (IllegalArgumentException e) {
-            view.displayErrorMessaje("No se puede eliminar la habitación. No se encontró en la lista.");
+            view.displayErrorMessage("No se puede eliminar la habitación. No se encontró en la lista.");
         }
     }
 
@@ -69,7 +71,7 @@ public void insert(Habitación habitacion) {
         if (habitacion != null) {
             view.display(habitacion);
         } else {
-            view.displayErrorMessaje("No se encontró la habitación con el número proporcionado.");
+            view.displayErrorMessage("No se encontró la habitación con el número proporcionado.");
         }
     }
 
@@ -77,8 +79,11 @@ public void insert(Habitación habitacion) {
     public void readAll() {
         Habitación[] habitaciones = habitacionList.toArray();
         if (habitaciones.length > 0) {
-            view.displayAll(habitaciones);
+            search.displayAll(habitaciones);
         }
+    }
+     public void setSearch(Search<Habitación> search) {
+        this.search = search;
     }
 }
 
