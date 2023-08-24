@@ -63,5 +63,14 @@ public class ClientesController implements Controller<Clientes> {
     public void setSearch(Search<Clientes> search) {
         this.search = search;
     }
+    public Clientes buscarClientePorCedula(String numeroCedula) {
+        for (Clientes cliente : list.toArray()) {
+            if (cliente.getIdentificacion().equals(numeroCedula)) {
+                return cliente;
+            }
+        }
+        return null; // Cliente no encontrado
+    }
+     
     
 }

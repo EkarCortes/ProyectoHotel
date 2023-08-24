@@ -1,12 +1,13 @@
 package Models.Reserva;
 
 import Models.Clientes.Clientes;
+import Models.Entity;
 import Models.Habitación.Habitación;
 import Models.Habitación.TipoHabitacion;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Reserva {
+public class Reserva implements Entity {
     private int numeroReserva; // -> Autonúmerico
     private Clientes cliente;
     private Habitación habitacion;
@@ -26,8 +27,21 @@ public class Reserva {
     }
 
     
+    public Reserva(Clientes cliente, Habitación habitacionDisponible, LocalDate fechaEntrada, LocalDate fechaSalida, EstadoReserva estadoReserva) {
 
-    public Reserva() {
+    this.cliente = cliente;
+    this.habitacion = habitacionDisponible;
+    this.fechaEntrada = fechaEntrada;
+    this.fechaSalida = fechaSalida;
+    this.estado = estadoReserva;
+
+    }
+
+    public Reserva(Clientes cliente, LocalDate fechaEntrada, LocalDate fechaSalida, double total, EstadoReserva estadoReserva) {
+    this.cliente = cliente;
+    this.fechaEntrada = fechaEntrada;
+    this.fechaSalida = fechaSalida;
+    this.estado = estadoReserva;
     }
 
     public int getNumeroReserva() {
@@ -84,8 +98,14 @@ public class Reserva {
     public void setEstado(EstadoReserva estado) {
         this.estado = estado;
     }
+    @Override
     public boolean isComplete() {
         return numeroReserva > 0 && cliente != null && tipoHabitacion != null
             && fechaEntrada != null && fechaSalida != null && precioTotal > 0.0 && estado != null;
+    }
+
+    @Override
+    public Object[] toArrayObject() {
+      return new Object[] {  getNumeroReserva(),getCliente(),getHabitacion(), getFechaEntrada(),getFechaSalida(),getEstado(),getPrecioTotal()  };
     }
 }

@@ -4,6 +4,9 @@
  */
 package Models.Reserva;
 
+import Models.Habitación.TipoHabitacion;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +29,11 @@ public class ReservaList {
         return instance;
     }
 
-    public void insert(Reserva reserva) {
-        reservas.add(reserva);
+    public boolean insert(Reserva reserva) {
+        int newCode = getNextAvailablenumber();
+        reserva.setNumeroReserva(newCode);
+        return reservas.add(reserva);
+
     }
 
     public Reserva search(int numeroReserva) {
@@ -49,10 +55,32 @@ public class ReservaList {
         }
     }
 
-    public void delete(Reserva reserva) {
-        reservas.remove(reserva);
+
+     private int getNextAvailablenumber() {
+        int maxCode = 0;
+        for (Reserva reserva : reservas) {
+            maxCode = Math.max(maxCode, reserva.getNumeroReserva());
+        }
+        return maxCode + 1;
     }
 
-    // Otros métodos para manipulación de la lista
-    // ...
+     public double calcularPrecioTotal(TipoHabitacion tipoHabitacion, LocalDate fechaEntrada, LocalDate fechaSalida) {
+    
+    long duracion = ChronoUnit.DAYS.between(fechaEntrada, fechaSalida);
+
+    // Calcular el precio por noche según el tipo de habitación
+    double precioPorNoche = 0.0;
+    switch (tipoHabitacion) {
+        case INDIVIDUAL -> precioPorNoche = 45000.0;
+        case DOBLE -> precioPorNoche = 80000.0;
+        case SUITE -> precioPorNoche = 140000.0;
+    }
+
+    // Calcular el precio total
+    double subtotal = precioPorNoche * duracion;
+    double impuestos = subtotal * 0.13; // Suponiendo una tasa de impuestos del 13%
+    double total = subtotal + impuestos;
+    
+    return total;
+}
 }

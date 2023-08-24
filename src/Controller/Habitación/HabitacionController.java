@@ -3,8 +3,10 @@ package Controller.Habitación;
 import Controller.Controller;
 import Models.Habitación.Habitación;
 import Models.Habitación.HabitacionList;
+import Models.Habitación.TipoHabitacion;
 import View.Search;
 import View.View;
+import java.time.LocalDate;
 
 /**
  * Controlador para gestionar operaciones relacionadas con habitaciones.
@@ -20,6 +22,7 @@ public class HabitacionController implements Controller<Habitación> {
     public HabitacionController(View <Habitación>view) {
         habitacionList = HabitacionList.getInstance();
         this.view = view;   
+        
     }
   
 
@@ -85,5 +88,16 @@ public void insert(Habitación habitacion) {
      public void setSearch(Search<Habitación> search) {
         this.search = search;
     }
+     
+     public void marcarHabitacionNoDisponible(Habitación habitacion) {
+        habitacion.setOcupado(true); // Marcamos la habitación como ocupada
+        habitacionList.update(habitacion); // Actualizamos la información en la lista de habitaciones
+    }
+
+    public void marcarHabitacionDisponible(Habitación habitacion) {
+        habitacion.setOcupado(false); // Marcamos la habitación como disponible
+        habitacionList.update(habitacion); // Actualizamos la información en la lista de habitaciones
+    }
+  
 }
 

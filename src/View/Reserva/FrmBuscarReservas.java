@@ -1,5 +1,6 @@
 package View.Reserva;
 
+
 /**
  *
  * @author abiga
@@ -11,6 +12,7 @@ public class FrmBuscarReservas extends javax.swing.JInternalFrame {
      */
     public FrmBuscarReservas() {
         initComponents();
+        
     }
 
     /**

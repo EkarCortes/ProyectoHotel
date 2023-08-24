@@ -4,19 +4,46 @@
  */
 package View.Reserva;
 
+import Controller.Clientes.ClientesController;
+import Controller.Habitación.HabitacionController;
+import Controller.Reserva.ReservaController;
+import Models.Habitación.TipoHabitacion;
+import Models.Reserva.EstadoReserva;
+import Models.Reserva.Reserva;
+import View.View;
+import java.time.LocalDate;
 import javax.swing.JDesktopPane;
-
+import javax.swing.JOptionPane;
 /**
  *
  * @author abiga
  */
-public class FrmReserva extends javax.swing.JInternalFrame {
+public class FrmReserva extends javax.swing.JInternalFrame implements View<Reserva>{
 
-  // private ReservaController reservacontroller;
-    
+  private ReservaController reservacontroller;
+  private ClientesController clientecontroller;
+  private HabitacionController habitacionController;
+  
     public FrmReserva() {
         initComponents();
+        this.reservacontroller = new ReservaController(this);        
+        this.tipoHabitacon();
+        this.estadoReserva();
     }
+
+    
+    private void tipoHabitacon() {
+        TipoHabitacion[] tipohabitaciones = TipoHabitacion.values();  
+        for (TipoHabitacion tipohabitacione : tipohabitaciones) {
+          txtTipoHabitacion.addItem(tipohabitacione.toString());
+        }
+    }
+        private void estadoReserva() {
+        EstadoReserva[] estados = EstadoReserva.values();  
+        for (EstadoReserva estado : estados) {
+        txtEstado.addItem(estado.toString());
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,17 +65,17 @@ public class FrmReserva extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtidentificacion = new javax.swing.JFormattedTextField();
-        txtnombre = new javax.swing.JTextField();
+        txtReserva = new javax.swing.JFormattedTextField();
+        txtCedulaCliente = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txttelefono = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        txtTipoHabitacion = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        txtPrecioTotal = new javax.swing.JTextField();
+        txtEstado = new javax.swing.JComboBox<>();
+        txtFechaSalida = new javax.swing.JFormattedTextField();
+        txtFechaEntrada1 = new javax.swing.JFormattedTextField();
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -57,19 +84,6 @@ public class FrmReserva extends javax.swing.JInternalFrame {
         btnLimpiar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/View/Icons/registro (1).png"))); // NOI18N
         btnLimpiar.setToolTipText("Limpiar");
         btnLimpiar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        btnLimpiar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                btnLimpiarMouseMoved(evt);
-            }
-        });
-        btnLimpiar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnLimpiarMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnLimpiarMouseExited(evt);
-            }
-        });
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLimpiarActionPerformed(evt);
@@ -177,19 +191,9 @@ public class FrmReserva extends javax.swing.JInternalFrame {
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
         jLabel3.setText("Tipo de habitación");
 
-        txtidentificacion.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#########"))));
-        txtidentificacion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtidentificacion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtidentificacionActionPerformed(evt);
-            }
-        });
-
-        txtnombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtnombreActionPerformed(evt);
-            }
-        });
+        txtReserva.setEditable(false);
+        txtReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#########"))));
+        txtReserva.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
@@ -199,20 +203,31 @@ public class FrmReserva extends javax.swing.JInternalFrame {
         jLabel5.setForeground(new java.awt.Color(102, 102, 102));
         jLabel5.setText("Fecha salida");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Individual", "Doble", "Suite" }));
-        jComboBox1.setMinimumSize(new java.awt.Dimension(86, 25));
+        txtTipoHabitacion.setMinimumSize(new java.awt.Dimension(86, 25));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(102, 102, 102));
         jLabel6.setText("Estado");
 
-        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 102, 102));
         jLabel7.setText("Precio Total");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En ejecución", "Finalizada", "Cancelada" }));
+        txtPrecioTotal.setEditable(false);
+
+        txtFechaSalida.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+        txtFechaSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaSalidaActionPerformed(evt);
+            }
+        });
+
+        txtFechaEntrada1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yyyy-MM-dd"))));
+        txtFechaEntrada1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaEntrada1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -222,15 +237,6 @@ public class FrmReserva extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtidentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
@@ -238,46 +244,59 @@ public class FrmReserva extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)))
+                        .addGap(21, 21, 21))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(txtCedulaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFechaEntrada1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
+                    .addComponent(txtFechaSalida)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 79, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jLabel7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                        .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6)
+                        .addComponent(jLabel7)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtidentificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txttelefono)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPrecioTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(txtCedulaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFechaSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtFechaEntrada1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(19, 19, 19))
         );
 
@@ -300,18 +319,6 @@ public class FrmReserva extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLimpiarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimpiarMouseMoved
-     
-    }//GEN-LAST:event_btnLimpiarMouseMoved
-
-    private void btnLimpiarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimpiarMouseEntered
-
-    }//GEN-LAST:event_btnLimpiarMouseEntered
-
-    private void btnLimpiarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLimpiarMouseExited
-
-    }//GEN-LAST:event_btnLimpiarMouseExited
-
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
       
     }//GEN-LAST:event_btnLimpiarActionPerformed
@@ -321,7 +328,12 @@ public class FrmReserva extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnReservarMouseMoved
 
     private void btnReservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReservarActionPerformed
-        
+   String cedulaCliente = txtCedulaCliente.getText();
+    TipoHabitacion tipoHabitacion = TipoHabitacion.valueOf(txtTipoHabitacion.getSelectedItem().toString());
+    LocalDate fechaEntrada = LocalDate.parse(txtFechaEntrada1.getText());
+    LocalDate fechaSalida = LocalDate.parse(txtFechaSalida.getText());
+
+    reservacontroller.insert(cedulaCliente, tipoHabitacion, fechaEntrada, fechaSalida);
     }//GEN-LAST:event_btnReservarActionPerformed
 
     private void btnActivarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActivarMouseMoved
@@ -337,21 +349,21 @@ public class FrmReserva extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnBuscarMouseMoved
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-//    FrmBuscarReservas frmBuscarReserva = new FrmBuscarReservas(this); 
-//    JDesktopPane desktopPane = getDesktopPane(); 
-//    desktopPane.add(frmBuscarReserva);
-//    this.reservacontroller.setSearch(frmBuscarReserva);  //REVISAR
-//    frmBuscarReserva.setEmpleadoController(reservacontroller);//REVISAR
-//    frmBuscarReserva.setVisible(true);
+    FrmBuscarReservas frmBuscarReserva = new FrmBuscarReservas(); 
+    JDesktopPane desktopPane = getDesktopPane(); 
+    desktopPane.add(frmBuscarReserva);
+   // this.reservacontroller.setSearch(frmBuscarReserva);  //REVISAR
+   // frmBuscarReserva.setEmpleadoController(reservacontroller);//REVISAR
+    frmBuscarReserva.setVisible(true);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void txtidentificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtidentificacionActionPerformed
+    private void txtFechaSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaSalidaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtidentificacionActionPerformed
+    }//GEN-LAST:event_txtFechaSalidaActionPerformed
 
-    private void txtnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreActionPerformed
+    private void txtFechaEntrada1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaEntrada1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtnombreActionPerformed
+    }//GEN-LAST:event_txtFechaEntrada1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -361,9 +373,6 @@ public class FrmReserva extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnFinalizar;
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnReservar;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -373,9 +382,55 @@ public class FrmReserva extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JFormattedTextField txtidentificacion;
-    private javax.swing.JTextField txtnombre;
-    private javax.swing.JTextField txttelefono;
+    private javax.swing.JTextField txtCedulaCliente;
+    private javax.swing.JComboBox<String> txtEstado;
+    private javax.swing.JFormattedTextField txtFechaEntrada1;
+    private javax.swing.JFormattedTextField txtFechaSalida;
+    private javax.swing.JTextField txtPrecioTotal;
+    private javax.swing.JFormattedTextField txtReserva;
+    private javax.swing.JComboBox<String> txtTipoHabitacion;
     // End of variables declaration//GEN-END:variables
+
+  @Override
+    public void clear() {
+    txtReserva.setText("");
+    txtCedulaCliente.setText("");
+    txtFechaSalida.setText("");
+    txtFechaSalida.setValue(null);
+    txtTipoHabitacion.setSelectedIndex(0);
+    txtEstado.setSelectedIndex(0);
+}
+
+    @Override
+       public void display(Reserva reserva) {
+    txtReserva.setText(String.valueOf(reserva.getNumeroReserva()));
+    txtCedulaCliente.setText(reserva.getCliente().getIdentificacion());
+    txtTipoHabitacion.setSelectedItem(reserva.getHabitacion());
+    txtFechaEntrada1.setValue(reserva.getFechaEntrada().toString());
+    txtFechaSalida.setValue(reserva.getFechaSalida().toString());
+    txtEstado.setSelectedItem(reserva.getEstado().toString());
+   // txtPrecioTotal.setText(String.valueOf(reserva.);
+    }
+
+
+    @Override
+    public void displayMessage(String msj) {
+       JOptionPane.showMessageDialog(this, msj, "Información Importante", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void displayErrorMessage(String msj) {
+        JOptionPane.showMessageDialog(this, msj, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public boolean displayConfirmMessage(String msj) {
+       int result = JOptionPane.showConfirmDialog(this, msj, "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        return result == JOptionPane.YES_OPTION;
+    }
+//
+//  public void setlienteSeleccionado(Clientes clienteSeleccionado) {
+//    this.clientesSeleccionado = clienteSeleccionado;
+//    display(clientesSeleccionado); // Esto actualiza los campos en FrmServicios
+//}
 }

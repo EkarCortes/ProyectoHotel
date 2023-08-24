@@ -265,7 +265,7 @@ public class FrmEmpleado extends javax.swing.JInternalFrame implements View<Empl
             Empleado newEmpleado = new Empleado(Identificacion, nombre, telefono, puesto);
             controller.insert(newEmpleado);
             clear();
-           controller.readAll();
+//           controller.readAll();
             
             JOptionPane.showMessageDialog(this, "Empleado agregado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);  
         } else {

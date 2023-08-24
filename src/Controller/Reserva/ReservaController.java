@@ -1,7 +1,8 @@
+package Controller.Reserva;
+
 import Controller.Clientes.ClientesController;
 import Controller.Habitación.HabitacionController;
 import Models.Clientes.Clientes;
-import Models.Habitación.Habitación;
 import Models.Habitación.TipoHabitacion;
 import Models.Reserva.EstadoReserva;
 import Models.Reserva.Reserva;
@@ -9,9 +10,8 @@ import Models.Reserva.ReservaList;
 import View.Search;
 import View.View;
 import java.time.LocalDate;
-import java.util.List;
 
-public class ReservaController {
+public class ReservaController  {
     private ReservaList reservaList;
     private ClientesController clienteController;
     private HabitacionController habitacionController;
@@ -25,27 +25,32 @@ public class ReservaController {
         this.habitacionController = habitacionController;
     }
 
-    public void reservar(String numeroCedula, TipoHabitacion tipoHabitacion, LocalDate fechaEntrada, LocalDate fechaSalida) {
-        Clientes cliente = clienteController.buscarClientePorCedula(numeroCedula);
-        if (cliente == null) {
-            view.displayMessage("Cliente no registrado. Debes registrar al cliente primero.");
-            return;
-        }
-
-        Habitación habitacionDisponible = habitacionController.obtenerHabitacionDisponible(tipoHabitacion, fechaEntrada, fechaSalida);
-        if (habitacionDisponible == null) {
-            view.displayErrorMessage("No hay habitaciones disponibles para el tipo y fechas seleccionadas.");
-            return;
-        }
-
-        int numeroReserva = obtenerProximoNumeroReserva();
-        int duracionEstadia = calcularDuracionEstadia(fechaEntrada, fechaSalida);
-        double precioTotal = calcularPrecioTotal(habitacionDisponible.getPrecioPorNoche(), duracionEstadia);
-
-        Reserva reserva = new Reserva (cliente, habitacionDisponible, fechaEntrada, fechaSalida, precioTotal, EstadoReserva.PENDIENTE);
-        reservaList.insert(reserva);
-        view.displayMessage("Reserva creada exitosamente.");
+    public ReservaController(View<Reserva> view) {
+         reservaList = ReservaList.getInstance();
+        this.view = view;
     }
+ 
+ 
+
+  public void insert(String cedulaCliente, TipoHabitacion tipoHabitacion, LocalDate fechaEntrada, LocalDate fechaSalida) {
+     Clientes cliente = clienteController.buscarClientePorCedula(cedulaCliente);
+    
+    if (cliente != null) {
+        // Calcular el precio total
+        double total = reservaList.calcularPrecioTotal(tipoHabitacion, fechaEntrada, fechaSalida);
+        
+        // Crear una nueva reserva
+        Reserva reserva = new Reserva(cliente, fechaEntrada, fechaSalida, total, EstadoReserva.PENDIENTE);
+        
+        // Agregar la reserva a la lista
+        reservaList.insert(reserva);
+        
+        // Mostrar mensaje de éxito
+        view.displayMessage("Reserva realizada exitosamente. Número de reserva: " + reserva.getNumeroReserva());
+    } else {
+        view.displayErrorMessage("El cliente no está registrado. Debes registrar al cliente primero.");
+    }
+   }
 
     public void activarReserva(int numeroReserva) {
         Reserva reserva = reservaList.search(numeroReserva);
@@ -80,26 +85,8 @@ public class ReservaController {
         }
     }
 
-    public void mostrarReservas() {
-        List<Reserva> reservas = reservaList.getAllReservas();
-        if (!reservas.isEmpty()) {
-            search.displayAll(reservas.toArray(new Reserva[0]));
-        } else {
-            view.displayMessage("No hay reservas registradas.");
-        }
-    }
 
-    // Implementar otros métodos necesarios
-
-    private int obtenerProximoNumeroReserva() {
-        // Implementar lógica para obtener el próximo número de reserva
-    }
-
-    private int calcularDuracionEstadia(LocalDate fechaEntrada, LocalDate fechaSalida) {
-        // Implementar lógica para calcular la duración de la estadía en días
-    }
-
-    private double calcularPrecioTotal(double precioPorNoche, int duracionEstadia) {
-        // Implementar lógica para calcular el precio total de la reserva
-    }
+     
 }
+   
+

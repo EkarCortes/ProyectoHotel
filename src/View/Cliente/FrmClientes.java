@@ -287,7 +287,6 @@ public class FrmClientes extends javax.swing.JInternalFrame implements View<Clie
         clientesController.insert(newCliente);
 
         clear();
-        clientesController.readAll();
 
         displayMessage("Cliente agregado exitosamente.");
     } catch (NumberFormatException e) {
