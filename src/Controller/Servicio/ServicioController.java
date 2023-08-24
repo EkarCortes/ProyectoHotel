@@ -3,11 +3,19 @@ package Controller.Servicio;
 import Controller.Controller;
 import Models.Servicio.Servicio;
 import Models.Servicio.ServicioList;
+import View.Search;
 import View.View;
 
 public class ServicioController implements Controller<Servicio> {
     private ServicioList servicioList;
     private View<Servicio> view;
+    private Search<Servicio> search;
+
+    public void setSearch(Search<Servicio> search) {
+        this.search = search;
+    }
+    
+    
 
     public ServicioController(View<Servicio> view) {
         servicioList = ServicioList.getInstance();
@@ -17,39 +25,40 @@ public class ServicioController implements Controller<Servicio> {
     @Override
     public void insert(Servicio servicio) {
         if (servicio.isComplete()) {
-            servicioList.insert(servicio);
-            view.displayAll(servicioList.toArray());
-        } else {
-            view.displayErrorMessaje("Faltan datos, no se pudo agregar el servicio.");
-        }
+        servicioList.insert(servicio);
+            System.out.println("Añadido correctamente: " + servicio.getCodigo());
+    } else {
+        view.displayErrorMessage("Faltan datos, no se pudo agregar el servicio.");
     }
+}
 
     @Override
     public void update(Servicio servicioActualizado) {
         if (servicioActualizado.isComplete()) {
             servicioList.update(servicioActualizado);
-            view.displayAll(servicioList.toArray());
+            System.out.println("Actualizado correctamente: " + servicioActualizado.getCodigo() + " - " + servicioActualizado.getNombre());
         } else {
-            view.displayErrorMessaje("No se puede actualizar el servicio. Faltan datos.");
+            view.displayErrorMessage("No se puede actualizar el servicio. Faltan datos.");
         }
     }
 
     @Override
     public void delete(Servicio servicio) {
-        if (servicioList.delete(servicio)) {
-            view.displayAll(servicioList.toArray());
+         if (servicioList.delete(servicio)) {
+            System.out.println("Eliminado correctamente: " + servicio.getCodigo() + " - " + servicio.getNombre());
+            //view.displayAll(servicioList.toArray()); 
         } else {
-            view.displayErrorMessaje("No se puede eliminar el servicio. No se encontró en la lista.");
+            view.displayErrorMessage("No se puede eliminar el servicio. No se encontró en la lista.");
         }
     }
-
+    
     @Override
     public void read(Object id) {
-        Servicio servicio = servicioList.search(id);
+        Servicio servicio = servicioList.search((int) id);
         if (servicio != null) {
             view.display(servicio);
         } else {
-            view.displayErrorMessaje("No se encontró el servicio con el código proporcionado.");
+            view.displayErrorMessage("No se encontró el servicio con el código proporcionado.");
         }
     }
 
@@ -57,7 +66,15 @@ public class ServicioController implements Controller<Servicio> {
     public void readAll() {
         Servicio[] serviciosArray = servicioList.toArray();
         if (serviciosArray.length > 0) {
-            view.displayAll(serviciosArray);
+            search.displayAll(serviciosArray);
         }
     }
+    public void addNewService(String nombre, String descripcion, double precio) {
+    Servicio nuevoServicio = new Servicio(nombre, descripcion, precio);
+    insert(nuevoServicio);
+}
+    public Servicio getServiceByCode(int code) {
+        return servicioList.search(code);
+    }
+ 
 }

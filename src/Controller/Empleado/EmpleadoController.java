@@ -7,6 +7,7 @@ package Controller.Empleado;
 import Controller.Controller;
 import Models.Empleado.Empleado;
 import Models.Empleado.EmpleadoList;
+import View.Search;
 import View.View;
 
 /**
@@ -17,9 +18,10 @@ import View.View;
 public class EmpleadoController implements Controller<Empleado> {
 
     private EmpleadoList empleadoList;
-    private View view;
+    private View <Empleado> view;
+    private Search <Empleado> search;
 
-    public EmpleadoController(View view) {
+    public EmpleadoController(View<Empleado> view) {
         empleadoList = EmpleadoList.getInstance();
         this.view = view;   
     }
@@ -28,9 +30,9 @@ public class EmpleadoController implements Controller<Empleado> {
     public void insert(Empleado empleado) {
         if (empleado.isComplete()) {
             empleadoList.insert(empleado);
-            this.readAll();
+           // this.readAll();
         } else {
-            view.displayErrorMessaje("Faltan datos. No se pudo agregar el empleado.");
+            view.displayErrorMessage("Faltan datos. No se pudo agregar el empleado.");
         }
     }
 
@@ -38,18 +40,18 @@ public class EmpleadoController implements Controller<Empleado> {
     public void update(Empleado empleado) {
         if (empleado.isComplete()) {
             empleadoList.update(empleado);
-            this.readAll();
+            //this.readAll();
         } else {
-            view.displayErrorMessaje("No se puede actualizar el empleado. Faltan datos.");
+            view.displayErrorMessage("No se puede actualizar el empleado. Faltan datos.");
         }
     }
 
     @Override
     public void delete(Empleado empleado) {
         if (empleadoList.delete(empleado)) {
-            this.readAll();
+           // this.readAll();
         } else {
-            view.displayErrorMessaje("No se puede eliminar el empleado. No se encontró en la lista.");
+            view.displayErrorMessage("No se puede eliminar el empleado. No se encontró en la lista.");
         }
     }
 
@@ -59,7 +61,7 @@ public class EmpleadoController implements Controller<Empleado> {
         if (empleado != null) {
             view.display(empleado);
         } else {
-            view.displayErrorMessaje("No se encontró el empleado con la identificación proporcionada.");
+            view.displayErrorMessage("No se encontró el empleado con la identificación proporcionada.");
         }
     }
 
@@ -67,8 +69,11 @@ public class EmpleadoController implements Controller<Empleado> {
     public void readAll() {
         Empleado[] empleados = empleadoList.toArray();
         if (empleados.length > 0) {
-            view.displayAll(empleados);
+            search.displayAll(empleados);
         }
+    }
+     public void setSearch(Search<Empleado> search) {
+        this.search = search;
     }
 
 }

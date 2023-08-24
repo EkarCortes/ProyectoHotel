@@ -2,7 +2,6 @@ package Models.Clientes;
 
 import Models.Entity;
 import Models.Persona;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -10,12 +9,12 @@ import java.util.Date;
  * @author abiga
  */
 public class Clientes extends Persona implements Entity{
-    private String FechadeNacimiento;
+    private Date fechaNacimiento;
     private String Correo;
     
-    public Clientes(String identificacion, String nombre, String telefono, String fechaDeNacimiento, String correo) {
+    public Clientes(String identificacion, String nombre, String telefono, Date fechaDeNacimiento, String correo) {
         super(identificacion, nombre, telefono); 
-        this.FechadeNacimiento = fechaDeNacimiento;
+        this.fechaNacimiento = fechaDeNacimiento;
         this.Correo = correo;
     }
 
@@ -23,17 +22,21 @@ public class Clientes extends Persona implements Entity{
         super(identificacion, "", ""); 
     }
 
-    public Clientes(String identificacion, String nombre, String fechaDeNacimiento) {
+    public Clientes(String identificacion, String nombre, Date fechaDeNacimiento) {
         super(identificacion, nombre); 
-        this.FechadeNacimiento = fechaDeNacimiento;
+        this.fechaNacimiento = fechaDeNacimiento;
         this.Correo = "";
     }
-     public String getFechaDeNacimiento() {
-        return FechadeNacimiento;
+
+//    public Clientes(int identificacion, String nombre, int telefono, Date fechaNacimiento, String correo) {
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//    }
+     public Date getFechaDeNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setFechaDeNacimiento(String fechaDeNacimiento) {
-        this.FechadeNacimiento = fechaDeNacimiento;
+    public void setFechaDeNacimiento(Date fechaDeNacimiento) {
+        this.fechaNacimiento = fechaDeNacimiento;
     }
 
     public String getCorreo() {
@@ -44,27 +47,35 @@ public class Clientes extends Persona implements Entity{
         this.Correo = correo;
     }
     public int getEdad() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date fechaNacimiento = dateFormat.parse(FechadeNacimiento);
-            Date fechaActual = new Date();
-            
-            long diferencia = fechaActual.getTime() - fechaNacimiento.getTime();
-            long yearsInMillis = 1000L * 60L * 60L * 24L * 365L;
-            int edad = (int) (diferencia / yearsInMillis);
-            
-            return edad;
-        } catch (Exception e) {
-            return -1; }
+        Date fechaActual = new Date();
+        int edad = fechaActual.getYear() - fechaNacimiento.getYear();
+        if (fechaActual.getMonth() < fechaNacimiento.getMonth()
+                || (fechaActual.getMonth() == fechaNacimiento.getMonth()
+                && fechaActual.getDay() < fechaNacimiento.getDay())) {
+            edad--;
         }
+        return edad;
+    }
     @Override
     public boolean isComplete() {
-        return !getIdentificacion().isEmpty() && !getNombre().isEmpty() && !FechadeNacimiento.isEmpty();
+        return !getIdentificacion().isEmpty() && !getNombre().isEmpty();
     }
 
 
     @Override
-    public Object[] toArrayObject() {
-        return new Object[] {getIdentificacion(), getNombre(), getTelefono(), FechadeNacimiento, Correo};
-    }
+   public Object[] toArrayObject() {
+    return new Object[] {
+        getIdentificacion(),
+        getNombre(),
+        getTelefono(),
+        fechaNacimiento,
+        getEdad(), // Incluir la edad aquí, ya que getEdad() devuelve la edad correctamente
+        Correo
+    };
 }
+}
+
+
+
+
+

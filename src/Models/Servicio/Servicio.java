@@ -10,8 +10,7 @@ public class Servicio {
     private String descripcion;
     private double precio;
 
-    public Servicio(int codigo, String nombre, String descripcion, double precio) {
-        this.codigo = codigo;
+    public Servicio(String nombre, String descripcion, double precio) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -19,6 +18,10 @@ public class Servicio {
 
     public int getCodigo() {
         return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -32,6 +35,9 @@ public class Servicio {
     public double getPrecio() {
         return precio;
     }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     @Override
     public String toString() {
@@ -39,10 +45,17 @@ public class Servicio {
     }
 
     public boolean isComplete() {
-        return codigo > 0 && !nombre.isEmpty() && !descripcion.isEmpty();
+       return !nombre.isEmpty() && !descripcion.isEmpty();
     }
 
     public Object[] toArrayObject() {
         return new Object[]{codigo, nombre, descripcion, precio};
+    }
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
     }
 }
