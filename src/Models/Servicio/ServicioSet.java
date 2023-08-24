@@ -1,38 +1,37 @@
 
 package Models.Servicio;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ServicioList {
- private static ServicioList servicioList;
- private List<Servicio> servicios;
- public ServicioList() {
- servicios= new ArrayList<>();
+import java.util.HashSet;
+import java.util.Set;
+public class ServicioSet {
+ private static ServicioSet servicioSet;
+    private Set<Servicio> servicios;
+    private ServicioSet() {
+        servicios = new HashSet<>();
     }
-  public static ServicioList getInstance() {
-        if (servicioList == null) {
-            servicioList = new ServicioList();
+    public static ServicioSet getInstance() {
+        if (servicioSet == null) {
+            servicioSet = new ServicioSet();
         }
-        return servicioList;
+        return servicioSet;
     }
 
     public boolean insert(Servicio servicio) {
-    int newCode = getNextAvailableCode(); 
-    servicio.setCodigo(newCode); 
+        int newCode = getNextAvailableCode();
+        servicio.setCodigo(newCode);
         return servicios.add(servicio);
     }
 
     public boolean update(Servicio servicioActualizado) {
-    for (int i = 0; i < servicios.size(); i++) {
-        Servicio servicioExistente = servicios.get(i); 
-        if (servicioExistente.getCodigo() == servicioActualizado.getCodigo()) {
-            servicios.set(i, servicioActualizado);
-            return true;
+        for (Servicio servicioExistente : servicios) {
+            if (servicioExistente.getCodigo() == servicioActualizado.getCodigo()) {
+                servicios.remove(servicioExistente);
+                servicios.add(servicioActualizado);
+                return true;
+            }
         }
+        return false;
     }
-    return false;
-}
 
     public boolean delete(Servicio servicio) {
         return servicios.remove(servicio);
@@ -46,16 +45,16 @@ public class ServicioList {
         }
         return null;
     }
-                                            
+
     public Servicio[] toArray() {
         return servicios.toArray(new Servicio[0]);
     }
+
     private int getNextAvailableCode() {
         int maxCode = 0;
         for (Servicio servicio : servicios) {
             maxCode = Math.max(maxCode, servicio.getCodigo());
         }
-        return maxCode + 1; 
+        return maxCode + 1;
     }
-
 }
